@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Excel - 업무현황_2026_최종_진짜최종.xlsx</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:12px;background:#f0f0f0;color:#222;user-select:none;overflow:hidden;height:100vh;display:flex;flex-direction:column;}
+/* TITLEBAR */
+#titlebar{background:#217346;color:white;padding:4px 12px;display:flex;align-items:center;gap:8px;min-height:28px;flex-shrink:0;}
+.fname{flex:1;text-align:center;font-size:13px;}
+.wbtns{display:flex;gap:2px;}
+.wbtn{width:46px;height:20px;border:none;background:transparent;color:white;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.wbtn:hover{background:rgba(255,255,255,0.2);}
+.wbtn.close:hover{background:#e81123;}
+/* RIBBON */
+#ribbon{background:#217346;border-bottom:2px solid #185c37;flex-shrink:0;}
+#rtabs{display:flex;padding:0 8px;}
+.rtab{color:rgba(255,255,255,0.85);padding:6px 14px;cursor:pointer;font-size:12px;border-bottom:2px solid transparent;margin-bottom:-2px;}
+.rtab:hover{background:rgba(255,255,255,0.15);}
+.rtab.active{background:white;color:#217346;border-radius:3px 3px 0 0;font-weight:600;border-bottom:2px solid white;}
+#rbody{background:white;border-bottom:1px solid #d4d4d4;padding:4px 12px;display:flex;gap:4px;align-items:center;min-height:52px;flex-wrap:wrap;}
+.rbtn{border:1px solid #d4d4d4;background:white;padding:3px 8px;cursor:pointer;border-radius:2px;font-size:11px;color:#333;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:40px;}
+.rbtn:hover{background:#e6f2ea;border-color:#217346;}
+.rbtn .ic{font-size:16px;}
+.rsep{width:1px;background:#d4d4d4;margin:4px 6px;align-self:stretch;}
+/* HUD */
+#hud{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-left:6px;}
+.hi{display:flex;flex-direction:column;align-items:center;}
+.hl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+.hv{font-size:14px;font-weight:700;color:#222;font-family:'Consolas',monospace;}
+#best-disp{color:#217346;}
+.c1{color:#222;}.c2{color:#217346;}.c3{color:#e65100;}.c4{color:#c62828;}
+.cx{color:#ad1457;font-size:16px;animation:pcx .5s infinite alternate;}
+@keyframes pcx{from{transform:scale(1);}to{transform:scale(1.2);}}
+/* FORMULA BAR */
+#fbar{display:flex;align-items:center;background:white;border-bottom:1px solid #d4d4d4;padding:2px 6px;gap:6px;min-height:26px;flex-shrink:0;}
+#cell-ref{width:60px;border:1px solid #d4d4d4;padding:2px 4px;font-size:12px;text-align:center;}
+#fx-lbl{color:#555;font-style:italic;font-size:13px;padding:0 4px;}
+#fml{flex:1;border:1px solid #d4d4d4;padding:2px 6px;font-size:12px;}
+/* MAIN */
+#main{display:flex;flex:1;overflow:hidden;min-height:0;}
+#game-area{flex:1;position:relative;overflow:hidden;background:white;transition:background 0.3s;}
+/* PAUSE */
+#pause-ov{position:absolute;inset:0;background:rgba(255,255,255,0.93);display:none;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:10px;}
+#pause-ov.show{display:flex;}
+#pause-txt{font-size:34px;font-weight:700;color:#217346;letter-spacing:3px;}
+#pause-sub{font-size:13px;color:#777;}
+/* GRID */
+.row-num-spacer{width:40px;min-width:40px;border-right:1px solid #d4d4d4;}
+.col-head{position:relative;border-right:1px solid #d4d4d4;text-align:center;font-size:11px;font-weight:600;color:#444;background:#f2f2f2;display:flex;align-items:center;justify-content:center;height:36px;transition:background .15s,color .15s;}
+.col-head::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:3px;cursor:col-resize;background:transparent;}
+.col-head:hover::after{background:rgba(33,115,70,0.35);}
+.col-head.ok{background:#217346;color:white;}
+.col-head.miss{background:#ffcdd2;color:#c62828;}
+#sheet-wrap{display:flex;flex-direction:column;height:100%;}
+#col-hdr{display:flex;background:#f2f2f2;border-bottom:1px solid #d4d4d4;flex-shrink:0;}
+#rows-area{flex:1;overflow:hidden;position:relative;}
+.sheet-row{display:flex;border-bottom:1px solid #e8e8e8;}
+.row-num{width:40px;min-width:40px;text-align:center;font-size:10px;color:#888;border-right:1px solid #d4d4d4;background:#f2f2f2;display:flex;align-items:center;justify-content:center;height:36px;}
+.cell{border-right:1px solid #e8e8e8;height:36px;display:flex;align-items:center;padding:0 4px;font-size:11px;color:#bbb;background:white;}
+/* DANGER LINE */
+#danger-line{position:absolute;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#e53935 0,#e53935 8px,transparent 8px,transparent 14px);z-index:25;pointer-events:none;}
+#danger-label{position:absolute;right:6px;font-size:10px;font-weight:700;color:#e53935;z-index:26;pointer-events:none;background:white;padding:0 3px;}
+/* TILES */
+.tile{position:absolute;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;z-index:20;pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+.tile.normal{background:#fff3cd;border:1.5px solid #ffc107;color:#856404;}
+.tile.fake{background:#fce4ec;border:1.5px solid #e53935;color:#b71c1c;opacity:0.82;text-decoration:line-through;}
+.tile.bonus{background:#fff8e1;border:2px solid #ffd600;color:#f57f17;}
+.tile.warn{background:#ffe0b2;border:1.5px solid #ff6d00;color:#bf360c;}
+.tile.danger{background:#ffcdd2;border:1.5px solid #e53935;color:#b71c1c;}
+.tile.expired{background:#fff3cd;border:1.5px solid #ffc107;color:#856404;}
+/* BONUS TIMER BAR */
+.btimer{position:absolute;bottom:0;left:0;height:3px;background:#4caf50;border-radius:0 0 2px 2px;}
+/* STAGE PROGRESS BAR */
+#prog-bar-wrap{position:absolute;top:36px;left:40px;right:0;height:3px;background:#f0f0f0;z-index:15;}
+#prog-bar{height:3px;background:#217346;transition:width .3s;}
+/* INPUT */
+#input-area{background:white;border-top:2px solid #217346;padding:8px 12px;display:flex;align-items:center;gap:12px;min-height:50px;flex-shrink:0;}
+#inp-lbl{font-size:12px;color:#666;white-space:nowrap;}
+#ans{flex:1;border:2px solid #217346;padding:6px 10px;font-size:16px;font-family:'Consolas',monospace;border-radius:3px;outline:none;background:#f9fff9;}
+#ans:focus{border-color:#185c37;box-shadow:0 0 0 3px rgba(33,115,70,0.2);}
+#ans.ok{border-color:#4caf50;background:#e8f5e9;animation:fok .3s;}
+#ans.bad{border-color:#f44336;background:#ffebee;animation:shk .3s;}
+#ans:disabled{background:#f5f5f5;border-color:#ccc;color:#999;}
+@keyframes fok{0%,100%{background:#e8f5e9;}50%{background:#c8e6c9;}}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+.ri.me 
+
+/* STATUSBAR */
+#statusbar{background:#217346;color:rgba(255,255,255,0.9);padding:2px 12px;display:flex;justify-content:space-between;align-items:center;font-size:11px;min-height:22px;flex-shrink:0;}
+.stabs{display:flex;gap:12px;}
+.stab{padding:0 8px;color:rgba(255,255,255,0.8);cursor:pointer;border-top:2px solid transparent;}
+.stab.active{color:white;border-top:2px solid white;}
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;}
+.dlg{background:white;border:1px solid #d4d4d4;border-top:3px solid #217346;padding:24px 32px;min-width:320px;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.2);text-align:center;}
+.dlg h2{font-size:20px;color:#217346;margin-bottom:8px;}
+.dlg p{color:#555;margin-bottom:12px;font-size:13px;line-height:1.7;}
+.dlg input[type=text]{width:100%;border:1.5px solid #d4d4d4;padding:8px 12px;font-size:15px;margin-bottom:4px;border-radius:2px;outline:none;font-family:inherit;transition:border-color .2s;}
+.dlg input[type=text]:focus{border-color:#217346;}
+
+.dinfo{background:#eaf4ee;border-radius:3px;padding:12px;margin-bottom:12px;}
+.dinfo .big{font-size:22px;font-weight:700;color:#217346;}
+.dinfo .sub{font-size:12px;color:#555;margin-top:3px;}
+.dbtn{background:#217346;color:white;border:none;padding:10px 28px;font-size:14px;cursor:pointer;border-radius:2px;font-family:inherit;width:100%;margin-top:4px;}
+.dbtn:hover{background:#185c37;}
+.dbtn.sec{background:white;color:#217346;border:1px solid #217346;}
+.dbtn.sec:hover{background:#eaf4ee;}
+/* PARTICLES */
+.particle{position:absolute;pointer-events:none;font-size:13px;font-weight:700;z-index:100;animation:pfx .9s forwards;white-space:nowrap;}
+@keyframes pfx{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.5);}}
+/* LEVEL FLASH */
+#lvl-flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:500;pointer-events:none;opacity:0;}
+#lvl-flash.show{animation:lpop 1.4s forwards;}
+@keyframes lpop{0%{opacity:0;transform:scale(0.7);}20%{opacity:1;transform:scale(1.08);}70%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(1.1);}}
+#lvl-txt{background:#217346;color:white;padding:14px 44px;font-size:28px;font-weight:700;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+/* BOSS KEY */
+#boss-ov{position:fixed;inset:0;background:white;z-index:9999;display:none;flex-direction:column;}
+#boss-ov.show{display:flex;}
+#boss-hdr{background:#0078d4;color:white;padding:10px 20px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:12px;}
+#boss-body{flex:1;padding:24px;background:#faf9f8;overflow-y:auto;}
+#boss-body h2{font-size:18px;color:#333;margin-bottom:16px;}
+.btbl{width:100%;border-collapse:collapse;background:white;}
+.btbl th{background:#f3f2f1;border:1px solid #edebe9;padding:8px 12px;text-align:left;font-size:12px;color:#666;}
+.btbl td{border:1px solid #edebe9;padding:8px 12px;font-size:13px;}
+.btbl tr:nth-child(even) td{background:#faf9f8;}
+.bcursor{display:inline-block;background:#0078d4;color:transparent;width:8px;height:14px;vertical-align:middle;animation:bcur .7s infinite;}
+@keyframes bcur{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+#boss-toast{position:fixed;bottom:60px;right:20px;background:#217346;color:white;padding:8px 16px;border-radius:4px;font-size:12px;z-index:10000;display:none;}
+#boss-toast.show{display:block;animation:btoast 2s forwards;}
+@keyframes btoast{0%{opacity:0;transform:translateY(8px);}15%{opacity:1;transform:translateY(0);}80%{opacity:1;}100%{opacity:0;}}
+#boss-hint{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.65);color:white;padding:8px 16px;border-radius:20px;font-size:12px;z-index:10000;}
+/* HEART ANIM */
+@keyframes hloss{0%{transform:scale(1.5);color:#f44336;}100%{transform:scale(1);color:inherit;}}
+#lives-disp.hl{display:inline-block;animation:hloss .45s forwards;}
+/* RANK OVERLAY */
+
+@media(max-width:800px){.dlg{min-width:unset;width:90vw;padding:20px;}}
+}
+@media(max-width:520px){#rtabs{display:none;}#fbar{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- BOSS KEY -->
+<div id="boss-ov">
+  <div id="boss-hdr">
+    <span>📊</span><span>SharePoint — 업무 포털</span>
+    <span style="margin-left:auto;font-size:12px;opacity:0.8;">마지막 저장: 방금 전</span>
+  </div>
+  <div id="boss-body">
+    <h2>2026년 1분기 업무 현황 보고서 <span class="bcursor">&nbsp;</span></h2>
+    <table class="btbl">
+      <thead><tr><th>부서</th><th>담당자</th><th>진행상황</th><th>완료율</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>기획팀</td><td>김○○</td><td>진행 중</td><td>72%</td><td>일정 검토 필요</td></tr>
+        <tr><td>개발팀</td><td>이○○</td><td>완료</td><td>100%</td><td>—</td></tr>
+        <tr><td>마케팅</td><td>박○○</td><td>검토 중</td><td>45%</td><td>추가 자료 요청</td></tr>
+        <tr><td>디자인</td><td>최○○</td><td>진행 중</td><td>88%</td><td>피드백 반영</td></tr>
+        <tr><td>인사팀</td><td>정○○</td><td>대기</td><td>20%</td><td>승인 대기</td></tr>
+        <tr><td>영업팀</td><td>강○○</td><td>완료</td><td>100%</td><td>Q2 준비 시작</td></tr>
+        <tr><td>총무팀</td><td>조○○</td><td>진행 중</td><td>60%</td><td>—</td></tr>
+        <tr><td>재무팀</td><td>윤○○</td><td>검토 중</td><td>35%</td><td>감사 준비</td></tr>
+      </tbody>
+    </table>
+    <br><p style="color:#666;font-size:12px;">마지막 업데이트: 2026-04-07 09:32 | 작성자: 시스템</p>
+  </div>
+  <div id="boss-toast">💾 저장 중...</div>
+  <div id="boss-hint">ESC 또는 F1 키로 돌아가기</div>
+</div>
+
+<div id="lvl-flash"><div id="lvl-txt"></div></div>
+
+<!-- TITLEBAR -->
+<div id="titlebar">
+  <span>📗</span>
+  <span class="fname" id="page-title">업무현황_2026_최종_진짜최종.xlsx — Microsoft Excel</span>
+  <div class="wbtns">
+    <button class="wbtn">─</button><button class="wbtn">□</button>
+    <button class="wbtn close" onclick="bossOn()">✕</button>
+  </div>
+</div>
+
+<!-- RIBBON -->
+<div id="ribbon">
+  <div id="rtabs">
+    <div class="rtab">파일</div><div class="rtab active">홈</div>
+    <div class="rtab">삽입</div><div class="rtab">페이지 레이아웃</div>
+    <div class="rtab">수식</div><div class="rtab">데이터</div>
+    <div class="rtab">검토</div><div class="rtab">보기</div>
+  </div>
+  <div id="rbody">
+    <button class="rbtn"><span class="ic">📋</span>붙여넣기</button>
+    <div class="rsep"></div>
+    <button class="rbtn"><span class="ic">✂️</span>잘라내기</button>
+    <button class="rbtn"><span class="ic">📄</span>복사</button>
+    <div class="rsep"></div>
+    <button class="rbtn"><span class="ic">B</span>굵게</button>
+    <button class="rbtn"><span class="ic"><i>I</i></span>기울임</button>
+    <div class="rsep"></div>
+    <div class="rsep"></div>
+    <div id="hud">
+      <div class="hi"><div class="hl">처리건수</div><div class="hv" id="score-disp">0</div></div>
+      <div class="hi"><div class="hl">최고처리</div><div class="hv" id="best-disp" style="color:#217346;">—</div></div>
+      <div class="hi"><div class="hl">분기</div><div class="hv" id="lvl-disp">1</div></div>
+      <div class="hi"><div class="hl">오류허용</div><div class="hv" id="lives-disp">♥♥♥</div></div>
+      <div class="hi"><div class="hl">잔여건수</div><div class="hv" id="prog-disp">0/10</div></div>
+      <div class="hi"><div class="hl">연속처리</div><div class="hv c1" id="combo-disp">×1</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FORMULA BAR -->
+<div id="fbar">
+  <input id="cell-ref" value="A1" readonly>
+  <span id="fx-lbl">ƒx</span>
+  <input id="fml" value="=VLOOKUP(A4,Sheet2!$A:$D,3,FALSE)" readonly>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="game-area">
+    <div id="pause-ov">
+      <div id="pause-txt">⏸ 일시정지</div>
+      <div id="pause-sub">ESC / F1 = 보스키 &nbsp;|&nbsp; P = 재개</div>
+    </div>
+    <div id="sheet-wrap">
+      <div id="col-hdr"><div class="row-num-spacer"></div></div>
+      <div id="rows-area">
+        <div id="prog-bar-wrap"><div id="prog-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+  </div></div>
+</div>
+
+<!-- INPUT -->
+<div id="input-area">
+  <span id="inp-lbl">데이터 입력:</span>
+  <input type="text" id="ans" placeholder="숫자를 입력하고 Enter..." autocomplete="off" spellcheck="false">
+  <div style="font-size:11px;color:#888;white-space:nowrap;">Enter=확인</div>
+</div>
+
+<!-- STATUSBAR -->
+<div id="statusbar">
+  <div class="stabs">
+    <span class="stab active">Sheet1</span>
+    <span class="stab">Sheet2</span>
+    <span class="stab">Sheet3</span>
+    <span class="stab">+</span>
+  </div>
+  <div id="status-msg">대기 중 | 연속처리: 1 | 분기: 1 | 처리합계: 0</div>
+  <div id="status-right">보기: 🔲 일반 보기 | 100%</div>
+</div>
+
+<!-- START -->
+<div class="overlay" id="start-ov">
+  <div class="dlg">
+    <h2>📊 데이터 처리 시스템 v2.1</h2>
+    <p style="text-align:left;font-size:12px;line-height:1.9;">
+      낙하하는 <b>데이터셀</b>을 입력란에 타이핑해 처리하세요.<br>
+      셀이 <b style="color:#e53935;">LIMIT 라인</b>을 넘으면 오류로 집계됩니다.<br>
+      <span style="color:#e53935;font-weight:700;">⚠ 빨간 테두리 셀</span>은 오류 데이터 — 입력 시 감점!<br>
+      <span style="color:#f57f17;font-weight:700;">★ 금색 셀</span>은 긴급처리 — 3초 내 입력 시 3배 점수!<br>
+      <span style="font-size:11px;color:#aaa;">숫자는 쉼표 포함 형태로 자동 변환됩니다 (예: 1,234 / 1,234,567)</span><br>
+      <span style="font-size:11px;color:#aaa;">HUD: 처리건수=점수, 분기=레벨, 오류허용=목숨, 연속처리=콤보</span>
+    </p>
+    <p style="font-size:11px;color:#999;margin-top:-6px;text-align:left;">ESC/F1=보스키 &nbsp;|&nbsp; P=일시정지</p>
+    <button class="dbtn" id="start-btn">▶ 게임 시작</button>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div class="overlay" id="go-ov" style="display:none;">
+  <div class="dlg">
+    <h2 id="go-title">⚠ ERR: 처리 한도 초과</h2>
+    <div class="dinfo">
+      <div class="big" id="go-score">0건</div>
+      <div class="sub" id="go-lvl">1분기 처리 종료</div>
+    </div>
+    <p id="go-best" style="font-size:12px;color:#888;margin-bottom:12px;"></p>
+    <button class="dbtn" onclick="restartGame()">재처리 시작</button>
+    <button class="dbtn sec" onclick="backToTitle()" style="margin-top:6px;">시스템 메인</button>
+  </div>
+</div>
+
+<!-- RANK OVERLAY -->
+
+<script>
+
+/* ═══ LOCAL BEST ═══ */
+const BK='excel_survivor_best';
+const loadBest=()=>parseInt(localStorage.getItem(BK)||'0',10);
+const saveBest=s=>{const p=loadBest();if(s>p){localStorage.setItem(BK,s);return true;}return false;};
+const showBest=()=>{const b=loadBest();document.getElementById('best-disp').textContent=b>0?b.toLocaleString():'—';};
+
+/* ═══ SOUND ═══ */
+let AC=null;
+function actx(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();return AC;}
+function beep(f,d,t,v){
+  t=t||'square';v=v||0.1;
+  try{const c=actx(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.type=t;o.frequency.setValueAtTime(f,c.currentTime);
+    g.gain.setValueAtTime(v,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);
+    o.start();o.stop(c.currentTime+d);}catch(e){}}
+function sOk(cb){beep(440+cb*40,.08,'square',.1);if(cb>=3)setTimeout(()=>beep(660+cb*30,.07,'square',.08),75);}
+function sBad(){beep(120,.18,'sawtooth',.12);}
+function sLose(){beep(110,.3,'sawtooth',.16);setTimeout(()=>beep(85,.25,'sawtooth',.1),200);}
+function sLvl(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.12,'square',.1),i*100));}
+function sBonus(){[880,1100,1320].forEach((f,i)=>setTimeout(()=>beep(f,.1,'square',.1),i*80));}
+function sFake(){beep(150,.2,'sawtooth',.14);}
+
+/* ═══ LEVEL CONFIG ═══ */
+// [maxNum, speed, spawnDelay(ms), totalTiles, cols, fakePct]
+const LV=[
+  null,
+  [99,       0.6,  2000, 10, 3,  0],
+  [999,      0.85, 1800, 10, 3,  0],
+  [9999,     1.1,  1600, 12, 4,  0],
+  [99999,    1.4,  1400, 12, 4, 10],
+  [99999,    1.75, 1200, 14, 5, 15],
+  [999999,   2.15, 1000, 14, 5, 20],
+  [999999,   2.6,   850, 16, 5, 20],
+  [9999999,  3.1,   700, 16, 5, 25],
+  [9999999,  3.8,   580, 18, 6, 30],
+  [99999999, 4.7,   460, 18, 6, 30],
+];
+
+/* ═══ BG CELL DATA ═══ */
+const BGDATA=[
+  '₩1,240,000','₩892,500','₩3,450,000','₩210,000','₩1,880,000',
+  '=SUM(B2:B12)','=VLOOKUP(A3,C:D,2,0)','=AVERAGE(E2:E8)',
+  'Q1 실적','Q2 목표','전년比','증감율','누적합계',
+  '홍길동','김철수','이영희','박민준','최수진',
+  '기획팀','개발팀','마케팅','총무팀','영업1팀',
+  '완료','진행중','검토','대기','승인',
+  '72%','88%','45%','100%','63%',
+  '1,240','892','3,450','210','1,880','744','2,190',
+];
+
+/* ═══ STATE ═══ */
+const G={
+  running:false, paused:false,
+  score:0, level:1, lives:3, combo:1,
+  nick:'', tiles:[],
+  rafId:null, spTmr:null,
+  cols:3, spd:0.6, cw:[],
+  stageTotal:10, stageSpawned:0, stageCleared:0,
+  spawning:false, levelingUp:false,
+  dangerY:0, // 캐시된 danger line Y값
+};
+const AL=['A','B','C','D','E','F'];
+
+/* ═══ VALUE GEN ═══ */
+function genNum(lv){
+  const cfg=LV[Math.min(lv,10)];
+  const max=cfg[0], min=Math.max(1,Math.floor(max/100));
+  const n=Math.floor(Math.random()*(max-min+1))+min;
+  return n.toLocaleString('ko-KR');
+}
+function genFakeNum(){
+  const reals=G.tiles.filter(t=>t.type==='normal'||t.type==='bonus');
+  let base;
+  if(reals.length>0){
+    base=parseInt(reals[Math.floor(Math.random()*reals.length)].txt.replace(/,/g,''));
+    const delta=Math.floor(Math.random()*9)+1;
+    base+=Math.random()<0.5?delta:-delta;
+    if(base<1)base=1;
+  } else {
+    base=Math.floor(Math.random()*999)+1;
+  }
+  return base.toLocaleString('ko-KR');
+}
+
+/* ═══ DANGER LINE ═══ */
+function updateDangerLine(){
+  const area=document.getElementById('game-area');
+  const h=area.offsetHeight;
+  if(h<100)return; // 아직 렌더링 안 됨
+  const y=h-54;
+  G.dangerY=y;
+  let dl=document.getElementById('danger-line');
+  let dlbl=document.getElementById('danger-label');
+  if(!dl){
+    dl=document.createElement('div');dl.id='danger-line';
+    document.getElementById('game-area').appendChild(dl);
+  }
+  if(!dlbl){
+    dlbl=document.createElement('div');dlbl.id='danger-label';
+    dlbl.textContent='LIMIT';
+    document.getElementById('game-area').appendChild(dlbl);
+  }
+  dl.style.top=y+'px';
+  dlbl.style.top=(y-14)+'px';
+}
+
+/* ═══ GRID ═══ */
+function buildGrid(){
+  // 기존 타일 제거
+  document.querySelectorAll('.tile').forEach(e=>e.remove());
+  const area=document.getElementById('game-area');
+  const ch=document.getElementById('col-hdr');
+  const ra=document.getElementById('rows-area');
+  ch.innerHTML='<div class="row-num-spacer"></div>';
+  const pbw=document.getElementById('prog-bar-wrap');
+  ra.innerHTML='';
+  ra.appendChild(pbw);
+
+  const cw=Math.floor((area.offsetWidth-40)/G.cols);
+  G.cw=Array(G.cols).fill(cw);
+
+  for(let c=0;c<G.cols;c++){
+    const d=document.createElement('div');
+    d.className='col-head';
+    d.style.cssText=`width:${cw}px;min-width:${cw}px`;
+    d.textContent=AL[c];
+    ch.appendChild(d);
+  }
+  for(let r=1;r<=25;r++){
+    const row=document.createElement('div');row.className='sheet-row';
+    const rn=document.createElement('div');rn.className='row-num';rn.textContent=r;
+    row.appendChild(rn);
+    for(let c=0;c<G.cols;c++){
+      const cell=document.createElement('div');cell.className='cell';
+      cell.style.cssText=`width:${cw}px;min-width:${cw}px`;
+      cell.textContent=BGDATA[Math.floor(Math.random()*BGDATA.length)];
+      cell.dataset.bg='1';
+      row.appendChild(cell);
+    }
+    ra.appendChild(row);
+  }
+  updateDangerLine();
+}
+
+/* ═══ STAGE ═══ */
+function startStage(){
+  const cfg=LV[Math.min(G.level,10)];
+  G.stageTotal=cfg[3];
+  G.stageSpawned=0;
+  G.stageCleared=0;
+  G.spawning=true;
+  G.spd=cfg[1];
+  G.cols=cfg[4];
+  buildGrid();
+  updateProgBar();
+  if(G.spTmr){clearInterval(G.spTmr);G.spTmr=null;}
+  G.spTmr=setInterval(doSpawn, cfg[2]);
+}
+
+function doSpawn(){
+  if(!G.running||G.paused)return;
+  if(G.stageSpawned>=G.stageTotal){
+    clearInterval(G.spTmr);G.spTmr=null;G.spawning=false;
+    if(G.stageCleared>=G.stageTotal&&!G.levelingUp){
+      G.levelingUp=true;
+      setTimeout(doLevelUp,600);
+    }
+    return;
+  }
+  const cfg=LV[Math.min(G.level,10)];
+  const isFake=Math.random()*100<cfg[5];
+  const isBonus=!isFake&&G.level>=3&&Math.random()<0.125;
+
+  const col=Math.floor(Math.random()*G.cols);
+  const cw=G.cw[col]||120;
+  const x=40+col*cw;
+  const area=document.getElementById('game-area');
+
+  let txt,type;
+  if(isFake){
+    txt=genFakeNum();type='fake';
+  } else {
+    const existing=new Set(G.tiles.filter(t=>t.type==='normal'||t.type==='bonus').map(t=>t.txt));
+    let candidate,tries=0;
+    do{candidate=genNum(G.level);tries++;}while(existing.has(candidate)&&tries<10);
+    txt=candidate;type=isBonus?'bonus':'normal';
+  }
+
+  const el=document.createElement('div');
+  el.className='tile '+type;
+  el.style.width=(cw-8)+'px';
+  el.style.height='36px';
+  el.style.left=(x+4)+'px';
+  el.style.top='36px'; // col-head 아래에서 시작
+  area.appendChild(el);
+
+  if(type==='bonus'){
+    el.innerHTML='<span style="pointer-events:none">★'+txt+'</span>';
+    const bar=document.createElement('div');bar.className='btimer';bar.style.width='100%';
+    el.appendChild(bar);
+  } else {
+    el.textContent=txt;
+  }
+
+  G.tiles.push({el,col,txt,type,y:36,bonusStart:isBonus?Date.now():0});
+  G.stageSpawned++;
+  updateProgBar();
+}
+
+function tileCleared(){
+  G.stageCleared++;
+  updateProgBar();
+  if(!G.spawning&&G.stageCleared>=G.stageTotal&&!G.levelingUp){
+    G.levelingUp=true;
+    setTimeout(doLevelUp,600);
+  }
+}
+
+function updateProgBar(){
+  const pct=G.stageTotal>0?Math.round((G.stageCleared/G.stageTotal)*100):0;
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-disp').textContent=G.stageCleared+'/'+G.stageTotal;
+}
+
+/* ═══ GAME LOOP ═══ */
+function loop(){
+  if(!G.running)return;
+  // dangerY 갱신 (offsetHeight가 0이면 재시도)
+  if(G.dangerY<50) updateDangerLine();
+
+  if(!G.paused&&G.dangerY>50){
+    const now=Date.now();
+    const rm=[];
+    for(let i=0;i<G.tiles.length;i++){
+      const t=G.tiles[i];
+      t.y+=G.spd;
+      t.el.style.top=t.y+'px';
+
+      // 색상 경고
+      const dist=G.dangerY-t.y;
+      if(t.type==='normal'||t.type==='bonus'||t.type==='expired'){
+        if(dist<30)      t.el.className='tile danger';
+        else if(dist<70) t.el.className='tile warn';
+        else             t.el.className='tile '+(t.type==='expired'?'normal':t.type);
+      }
+
+      // 보너스 타이머
+      if(t.type==='bonus'){
+        const elapsed=now-t.bonusStart;
+        const bar=t.el.querySelector('.btimer');
+        if(bar){
+          const pct=Math.max(0,1-elapsed/3000);
+          bar.style.width=(pct*100)+'%';
+          if(pct<=0)bar.style.background='#f44336';
+        }
+        if(elapsed>3000){
+          t.type='expired';
+          t.el.className='tile normal';
+          t.el.textContent=t.txt;
+        }
+      }
+
+      // 바닥 도달
+      if(t.y+36>=G.dangerY&&G.running){
+        missT(t);
+        rm.push(i);
+      }
+    }
+    // 뒤에서부터 제거 (인덱스 오류 방지)
+    for(let i=rm.length-1;i>=0;i--){
+      G.tiles[rm[i]].el.remove();
+      G.tiles.splice(rm[i],1);
+    }
+
+    // 수식 입력줄 업데이트 (60프레임마다)
+    if(G.tiles.length>0){
+      if(!G._ftick)G._ftick=0;
+      if(++G._ftick%60===0){
+        const bot=G.tiles.reduce((a,b)=>b.y>a.y?b:a);
+        const row=Math.max(1,Math.min(25,Math.floor(bot.y/36)+1));
+        document.getElementById('cell-ref').value=AL[bot.col]+row;
+        document.getElementById('fml').value=bot.txt;
+      }
+    }
+  }
+  G.rafId=requestAnimationFrame(loop);
+}
+
+/* ═══ LEVEL UP ═══ */
+function doLevelUp(){
+  if(!G.running)return;
+  if(G.level>=10){stageClear();return;}
+  G.level++;
+  G.tiles.forEach(t=>t.el.remove());G.tiles=[];
+  updateHUD();sLvl();
+  const fl=document.getElementById('lvl-flash');
+  document.getElementById('lvl-txt').textContent=G.level+'분기 업무 시작';
+  fl.classList.remove('show');void fl.offsetWidth;fl.classList.add('show');
+  setTimeout(()=>{G.levelingUp=false;startStage();},500);
+}
+
+/* ═══ ANSWER ═══ */
+document.getElementById('ans').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();checkAns();}
+});
+
+function checkAns(){
+  const inp=document.getElementById('ans');
+  const val=inp.value.trim();
+  inp.value=''; // 항상 먼저 지움
+  if(!val||!G.running||G.paused)return;
+
+  // 일반 타일 매칭 (가장 아래 것)
+  let matched=null,mi=-1;
+  for(let i=0;i<G.tiles.length;i++){
+    const t=G.tiles[i];
+    if(t.type!=='fake'&&t.txt===val){
+      if(!matched||t.y>matched.y){matched=t;mi=i;}
+    }
+  }
+
+  // 가짜 타일 매칭
+  let hitFake=null,fmi=-1;
+  if(!matched){
+    for(let i=0;i<G.tiles.length;i++){
+      if(G.tiles[i].type==='fake'&&G.tiles[i].txt===val){hitFake=G.tiles[i];fmi=i;break;}
+    }
+  }
+
+  if(matched){
+    const isBonus=matched.type==='bonus'&&(Date.now()-matched.bonusStart)<3000;
+    const mult=isBonus?3:1;
+    const pts=Math.floor((20+G.level*10)*G.combo*mult);
+    G.score+=pts;
+    const label=isBonus?'★ 긴급처리 +'+pts:(G.combo>1?'연속처리 ×'+G.combo+' +'+pts:'✓ 입력완료 +'+pts);
+    showPtcl(matched.el,label,isBonus?'#f57f17':'#217346');
+    if(isBonus)sBonus();else sOk(G.combo);
+    matched.el.remove();G.tiles.splice(mi,1);
+    G.combo=Math.min(G.combo+1,8);
+    inp.className='ok';setTimeout(()=>{inp.className='';},300);
+    flashCol(matched.col,true);
+    fillCell(matched.col,matched.txt);
+    tileCleared();
+  } else if(hitFake){
+    G.score=Math.max(0,G.score-50);
+    showPtcl(hitFake.el,'⚠ 오류데이터 -50','#e53935');
+    sFake();
+    hitFake.el.remove();G.tiles.splice(fmi,1);
+    G.combo=1;
+    inp.className='bad';setTimeout(()=>{inp.className='';},300);
+    tileCleared();
+  } else {
+    G.combo=1;sBad();
+    inp.className='bad';setTimeout(()=>{inp.className='';},300);
+  }
+  updateHUD();
+}
+
+/* ═══ MISS ═══ */
+function missT(t){
+  if(!G.running)return;
+  if(t.type==='fake'||t.type==='expired'){tileCleared();return;}
+  G.lives=Math.max(0,G.lives-1);
+  G.combo=1;
+  sLose();
+  flashCol(t.col,false);
+  explodeParticle(t);
+  const a=document.getElementById('game-area');
+  a.style.background='#ffebee';setTimeout(()=>{a.style.background='white';},350);
+  const ld=document.getElementById('lives-disp');
+  ld.classList.remove('hl');void ld.offsetWidth;ld.classList.add('hl');
+  updateHUD();
+  if(G.lives<=0){gameOver();return;}
+  tileCleared();
+}
+
+/* ═══ EXPLODE ═══ */
+function explodeParticle(t){
+  const area=document.getElementById('game-area');
+  for(let i=0;i<5;i++){
+    const p=document.createElement('div');p.className='particle';
+    p.style.left=(t.el.offsetLeft+t.el.offsetWidth/2)+'px';
+    p.style.top=G.dangerY+'px';
+    p.style.color='#e53935';p.textContent='✕';
+    p.style.setProperty('--dx',((Math.random()-0.5)*60)+'px');
+    p.style.setProperty('--dy',-(20+Math.random()*30)+'px');
+    area.appendChild(p);setTimeout(()=>p.remove(),900);
+  }
+}
+
+/* ═══ FILL CELL ═══ */
+function fillCell(col,txt){
+  const rows=document.getElementById('rows-area').querySelectorAll('.sheet-row');
+  let target=null;
+  for(const row of rows){
+    const cells=row.querySelectorAll('.cell');
+    if(cells[col]&&cells[col].dataset.bg==='1')target=cells[col];
+  }
+  if(!target)return;
+  target.textContent=txt;
+  target.style.color='#217346';
+  target.style.fontWeight='600';
+  delete target.dataset.bg;
+}
+
+/* ═══ FLASH COL ═══ */
+function flashCol(col,good){
+  const hs=document.getElementById('col-hdr').querySelectorAll('.col-head');
+  const cls=good?'ok':'miss';
+  if(hs[col]){hs[col].classList.add(cls);setTimeout(()=>hs[col].classList.remove(cls),350);}
+}
+
+/* ═══ HUD ═══ */
+function updateHUD(){
+  document.getElementById('score-disp').textContent=G.score.toLocaleString();
+  document.getElementById('lvl-disp').textContent=G.level;
+  document.getElementById('lives-disp').textContent='♥'.repeat(G.lives)+'♡'.repeat(Math.max(0,3-G.lives));
+  const cd=document.getElementById('combo-disp');
+  cd.textContent='×'+G.combo;
+  cd.className='hv '+(G.combo>=8?'cx':G.combo>=5?'c4':G.combo>=3?'c3':G.combo>=2?'c2':'c1');
+  document.getElementById('status-msg').textContent=
+    '처리완료: '+G.score.toLocaleString()+'건 | 연속처리: '+G.combo+' | '+G.level+'분기 | '+new Date().toLocaleTimeString('ko-KR');
+}
+
+/* ═══ PARTICLES ═══ */
+function showPtcl(anchor,text,color){
+  const area=document.getElementById('game-area');
+  const p=document.createElement('div');p.className='particle';
+  const ar=anchor.getBoundingClientRect(),gr=area.getBoundingClientRect();
+  p.style.left=(ar.left-gr.left+ar.width/2)+'px';
+  p.style.top=(ar.top-gr.top)+'px';
+  p.style.color=color||'#217346';
+  p.textContent=text;
+  p.style.setProperty('--dx',((Math.random()-.5)*90)+'px');
+  p.style.setProperty('--dy',-(45+Math.random()*45)+'px');
+  area.appendChild(p);setTimeout(()=>p.remove(),900);
+}
+
+/* ═══ BOSS KEY ═══ */
+let bossTmr=null;
+function bossOn(){
+  if(G.running&&!G.paused)doPause(true);
+  document.getElementById('pause-ov').classList.remove('show');
+  document.getElementById('boss-ov').classList.add('show');
+  document.getElementById('page-title').textContent='● 편집 중 — Microsoft Excel';
+  document.title='● 편집 중 — Microsoft Excel';
+  bossTmr=setInterval(()=>{
+    const t=document.getElementById('boss-toast');
+    t.classList.remove('show');void t.offsetWidth;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2100);
+  },5000);
+}
+function bossOff(){
+  document.getElementById('boss-ov').classList.remove('show');
+  document.getElementById('page-title').textContent='업무현황_2026_최종_진짜최종.xlsx — Microsoft Excel';
+  document.title='Microsoft Excel - 업무현황_2026_최종_진짜최종.xlsx';
+  if(bossTmr){clearInterval(bossTmr);bossTmr=null;}
+  if(G.running&&G.paused)doResume();
+  document.getElementById('ans').focus();
+}
+
+/* ═══ PAUSE ═══ */
+function doPause(silent){
+  if(!G.running||G.paused)return;
+  G.paused=true;
+  if(!silent)document.getElementById('pause-ov').classList.add('show');
+  document.getElementById('ans').disabled=true;
+}
+function doResume(){
+  if(!G.running||!G.paused)return;
+  G.paused=false;
+  document.getElementById('pause-ov').classList.remove('show');
+  document.getElementById('ans').disabled=false;
+  document.getElementById('ans').focus();
+}
+
+/* ═══ KEYBOARD ═══ */
+document.addEventListener('keydown',function(e){
+  const bo=document.getElementById('boss-ov').classList.contains('show');
+  if(e.key==='Escape'||e.key==='F1'){
+    e.preventDefault();
+    bo?bossOff():(G.running&&bossOn());
+    return;
+  }
+  if((e.key==='p'||e.key==='P')&&G.running&&!bo){
+    G.paused?doResume():doPause(false);
+  }
+});
+
+/* ═══ GAME OVER ═══ */
+async function gameOver(){
+  if(!G.running)return;
+  G.running=false;G.paused=false;
+  cancelAnimationFrame(G.rafId);
+  if(G.spTmr){clearInterval(G.spTmr);G.spTmr=null;}
+  G.tiles.forEach(t=>t.el.remove());G.tiles=[];
+  const isNR=saveBest(G.score);showBest();
+  document.getElementById('go-title').textContent='⚠ ERR: 처리 한도 초과';
+  document.getElementById('go-score').textContent='총 '+G.score.toLocaleString()+'건 처리';
+  document.getElementById('go-lvl').textContent=G.level+'분기 처리 종료';
+  document.getElementById('go-best').textContent=isNR?'🎉 개인 최고기록 갱신!':'개인 최고: '+loadBest().toLocaleString()+'점';
+  document.getElementById('go-ov').style.display='flex';
+}
+
+/* ═══ STAGE CLEAR ═══ */
+async function stageClear(){
+  if(!G.running)return;
+  G.running=false;G.paused=false;
+  cancelAnimationFrame(G.rafId);
+  if(G.spTmr){clearInterval(G.spTmr);G.spTmr=null;}
+  G.tiles.forEach(t=>t.el.remove());G.tiles=[];
+  const bonus=50000;G.score+=bonus;
+  const isNR=saveBest(G.score);showBest();
+  document.getElementById('go-title').textContent='🏆 전 분기 처리 완료!';
+  document.getElementById('go-score').textContent='총 '+G.score.toLocaleString()+'건 처리';
+  document.getElementById('go-lvl').textContent='보너스 +'+bonus.toLocaleString()+'점 지급!';
+  document.getElementById('go-best').textContent=isNR?'🎉 개인 최고기록 갱신!':'개인 최고: '+loadBest().toLocaleString()+'점';
+  document.getElementById('go-ov').style.display='flex';
+}
+
+/* ═══ START ═══ */
+function doStartGame(){
+  const nick='플레이어';
+  // 기존 인터벌 정리
+  if(G.spTmr){clearInterval(G.spTmr);G.spTmr=null;}
+  if(G.rafId){cancelAnimationFrame(G.rafId);G.rafId=null;}
+
+  Object.assign(G,{
+    nick, score:0, level:1, lives:3, combo:1, tiles:[],
+    spd:0.6, running:true, paused:false,
+    stageSpawned:0, stageCleared:0, spawning:false, levelingUp:false,
+    cols:3, dangerY:0, _ftick:0,
+  });
+
+  document.getElementById('start-ov').style.display='none';
+  document.getElementById('go-ov').style.display='none';
+  document.getElementById('pause-ov').classList.remove('show');
+  document.getElementById('ans').disabled=false;
+  document.getElementById('ans').value='';
+
+  updateHUD();showBest();
+
+  // startStage → RAF 순서 중요
+  startStage();
+  G.rafId=requestAnimationFrame(loop);
+  document.getElementById('ans').focus();
+}
+
+function restartGame(){
+  
+  doStartGame();
+}
+function backToTitle(){
+  document.getElementById('go-ov').style.display='none';
+  document.getElementById('start-ov').style.display='flex';
+}
+
+/* ═══ BINDINGS ═══ */
+document.getElementById('start-btn').addEventListener('click',doStartGame);
+
+// 입력란 자동 쉼표 포맷
+document.getElementById('ans').addEventListener('input',function(){
+  const inp=this;
+  const raw=inp.value.replace(/,/g,'');          // 기존 쉼표 제거
+  if(raw===''||raw==='-'){return;}                // 빈값 or 음수 부호
+  const n=parseInt(raw,10);
+  if(!isNaN(n)){
+    const formatted=n.toLocaleString('ko-KR');
+    if(inp.value!==formatted){
+      inp.value=formatted;                        // 쉼표 삽입된 값으로 교체
+    }
+  }
+});
+
+/* ═══ RESPONSIVE ═══ */
+
+/* ═══ PERIODIC EFFECTS ═══ */
+// 저장 중 표시
+setInterval(()=>{
+  if(!document.getElementById('boss-ov').classList.contains('show')){
+    const sm=document.getElementById('status-msg');
+    const prev=sm.textContent;
+    sm.textContent='💾 저장 중...';
+    setTimeout(()=>{
+      sm.textContent='✓ 저장됨';
+      setTimeout(()=>{if(G.running)updateHUD();else sm.textContent=prev;},1200);
+    },800);
+  }
+},18000);
+
+// 단축키 힌트
+const HINTS=['Ctrl+S 저장','Ctrl+Z 실행취소','Ctrl+C 복사','F2 셀편집','Ctrl+Home 처음으로','Alt+Enter 줄바꿈'];
+setInterval(()=>{
+  const el=document.getElementById('status-right');
+  if(el&&!document.getElementById('boss-ov').classList.contains('show')){
+    const prev=el.textContent;
+    el.textContent=HINTS[Math.floor(Math.random()*HINTS.length)];
+    setTimeout(()=>{el.textContent=prev;},3000);
+  }
+},22000);
+
+/* ═══ INIT ═══ */
+showBest();
+buildGrid();
+</script>
+</body>
+</html>
